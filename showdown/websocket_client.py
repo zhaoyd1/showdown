@@ -128,13 +128,13 @@ class PSWebsocketClient:
             if (
                 len(split_msg) == 9 and
                 split_msg[1] == "pm" and
-                split_msg[3].strip() == self.username and
+                (split_msg[3].strip() == self.username or split_msg[3].strip() == '!' + self.username) and
                 split_msg[4].startswith("/challenge") and
                 split_msg[5] == battle_format
             ):
                 username = split_msg[2].strip()
 
-        message = ["/accept " + username]
+        message = ["/accept {}".format(username)]
         await self.send_message('', message)
 
     async def search_for_match(self, battle_format, team):
